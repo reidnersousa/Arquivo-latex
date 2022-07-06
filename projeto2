@@ -1,0 +1,240 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% How to use writeLaTeX: 
+%
+% You edit the source code here on the left, and the preview on the
+% right shows you the result within a few seconds.
+%
+% Bookmark this page and share the URL with your co-authors. They can
+% edit at the same time!
+%
+% You can upload figures, bibliographies, custom classes and
+% styles using the files menu.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[12pt]{article}
+
+\usepackage{sbc-template}
+
+\usepackage{graphicx,url}
+
+
+
+\usepackage{listings}
+\usepackage{xcolor}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+\lstset{style=mystyle}
+
+%\usepackage[brazil]{babel}   
+\usepackage[utf8]{inputenc}  
+
+     
+\sloppy
+
+\title{Problema da Mochila \\ Análise de Algoritmos -Projeto 1}
+
+\author{ Reidner Sousa dos Santos, Raul Lima }
+
+
+\address{
+    Instituo Federal de Brasília -(IFB) // Campus Taguatinga -Brasília -DF -Brasil 
+
+}
+
+\begin{document} 
+
+\maketitle
+
+\begin{resumo} 
+   Esse artigo compara a eficiência de duas abordagem usadas para resolver o Problema da Mochila Booleano. A primeira abordagem é baseada em algoritmos gulosos e  a segunda abordagem é baseada em programação dinâmica .
+\end{resumo}
+
+
+\section{Introdução}
+O problema da mochila é um problema que consiste em determinar qual a melhor  forma de colocar uma sequência de itens com pesos diferentes que possuem um custo único para cada peso a ponto de maximizar o custo  sem exceder a  capacidade máxima da mochila. Esse problema foi resolvido de duas forma.Uma forma foi utilizando uma abordagem gulosa e  a outra forma foi utilizando uma abordagem dinâmica .
+
+
+\section{Abordagem Gulosos} \label{sec:firstpage}
+
+A abordagem gulosa parece ser ótima a primeira vista ,pode conseguir  resolver alguns tipos de mochila mas  ao utilizar vários tipos de mochila com peso , custo e capacidade diferente é possível perceber que nem sempre essa abordagem vai fornecer os melhores resultados possíveis pois ela prioriza os tem o menor peso que às vezes não é a melhor escolha .Ou seja, na abordagem gulosa o algoritmo  escolher as opções que parece ser mais vantajosa localmente e não globalmente .
+
+
+\subsection{Implementação Gulosa}
+
+
+\begin{lstlisting}[language = Python ]
+ldf, W = load_data('/content/sample_data/knapPI_1_100_1000_1', 'weigth')
+
+def byMinWeigths(weigthKnapSack:int, 
+                  itens:pd.DataFrame) -> pd.DataFrame:
+  insertItem:int = 0
+  itenCapacidade:int = 0
+  minWeigthKnapSack:int = 0
+  setSolution:pd.DataFrame = pd.DataFrame({
+      'value': [],   
+      'weigth': []
+  })
+
+  setSolution  = setSolution.append({
+        'value': itens.value[0],   
+        'weigth': itens.weigth[0]
+    }, ignore_index=True)
+
+
+  for _, item in itens.iterrows(): 
+    itenCapacidade = item.weigth
+    if itenCapacidade < weigthKnapSack - insertItem:
+      setSolution = setSolution.append({
+        'value': item.value, 
+        'weigth': item.weigth
+      }
+      , ignore_index=True)
+      insertItem = item.weigth
+
+  return setSolution
+  
+ df:pd.DataFrame = byMinWeigths(W, ldf)
+\end{lstlisting}
+\begin{center}
+   $\textbf{Insere os itens de menor peso ,procurando maximizar o numeros de itens inseridos }$
+\end{center}
+
+
+
+\begin{lstlisting}[language = Python  ]
+
+ldf, W = load_data('/content/sample_data/knapPI_1_100_1000_1', 'value')
+cust = load_data_cost('/content/sample_data/knapPI_1_1000_1o')
+asnwer = load_data_answer('/content/sample_data/knapPI_1_1000_1a')
+
+def benefit_by_cust():
+  return 
+
+def byValueWeigths(weigthKnapSack:int, 
+                 knapSack:pd.DataFrame, itens:pd.DataFrame) -> pd.DataFrame:
+  itenCapacidade:int = 0
+  maxValueKnapSack:int = 0
+
+  knapSack.append({
+      'value': knapSack.value[0].value,   
+      'weigth': knapSack.weight[0]
+  }
+
+  for item in knapSack.iterrows():
+    itenCapacidade = item.weigth
+    if itenCapacidade < weigthKnapSack && maxValueKnapSack > itenCapacidade:
+      knapSack.append({
+        value: item.value,   
+        weigth: item.weigth
+      }
+      , ignore_index=False)
+
+  return knapSack
+\end{lstlisting}
+\begin{center}
+   $\textbf{Insere os itens de melhor relação de benefício/custo}$
+\end{center}
+
+
+
+\section{Abordagem Dinamica }
+
+Na abordagem que utiliza programação dinâmica é possível definir quais itens têm um peso-custo ótimo assim é possível ter o melhor resultado do problema mochila .Entretanto para implementar essa abordagem devemos resolver todos os problemas combinando as soluções para os subproblemas . Ou seja esse problema pode ser resolvido utilizando recursão
+
+
+\section{Sections and Paragraphs}
+
+Section titles must be in boldface, 13pt, flush left. There should be an extra
+12 pt of space before each title. Section numbering is optional. The first
+paragraph of each section should not be indented, while the first lines of
+subsequent paragraphs should be indented by 1.27 cm.
+
+\subsection{Subsections}
+
+The subsection titles must be in boldface, 12pt, flush left.
+
+\section{Figures and Captions}\label{sec:figs}
+
+
+Figure and table captions should be centered if less than one line
+(Figure~\ref{fig:exampleFig1}), otherwise justified and indented by 0.8cm on
+both margins, as shown in Figure~\ref{fig:exampleFig2}. The caption font must
+be Helvetica, 10 point, boldface, with 6 points of space before and after each
+caption.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=.5\textwidth]{fig1.jpg}
+\caption{A typical figure}
+\label{fig:exampleFig1}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=.3\textwidth]{fig2.jpg}
+\caption{This figure is an example of a figure caption taking more than one
+  line and justified considering margins mentioned in Section~\ref{sec:figs}.}
+\label{fig:exampleFig2}
+\end{figure}
+
+In tables, try to avoid the use of colored or shaded backgrounds, and avoid
+thick, doubled, or unnecessary framing lines. When reporting empirical data,
+do not use more decimal digits than warranted by their precision and
+reproducibility. Table caption must be placed before the table (see Table 1)
+and the font used must also be Helvetica, 10 point, boldface, with 6 points of
+space before and after each caption.
+
+\begin{table}[ht]
+\centering
+\caption{Variables to be considered on the evaluation of interaction
+  techniques}
+\label{tab:exTable1}
+\includegraphics[width=.7\textwidth]{table.jpg}
+\end{table}
+
+\section{Images}
+
+All images and illustrations should be in black-and-white, or gray tones,
+excepting for the papers that will be electronically available (on CD-ROMs,
+internet, etc.). The image resolution on paper should be about 600 dpi for
+black-and-white images, and 150-300 dpi for grayscale images.  Do not include
+images with excessive resolution, as they may take hours to print, without any
+visible difference in the result. 
+
+\section{References}
+
+Bibliographic references must be unambiguous and uniform.  We recommend giving
+the author names references in brackets, e.g. \cite{knuth:84},
+\cite{boulic:91}, and \cite{smith:99}.
+
+The references must be listed using 12 point font size, with 6 points of space
+before each reference. The first line of each reference should not be
+indented, while the subsequent should be indented by 0.5 cm.
+
+\bibliographystyle{sbc}
+\bibliography{sbc-template}
+
+\end{document}
